@@ -60,3 +60,4 @@ class EventResponse(BaseModel):
 class EventStatusUpdate(BaseModel):
     status: str  # approved or rejected
 
+

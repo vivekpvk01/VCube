@@ -38,3 +38,4 @@ def create_hall_ticket_pdf(student_name: str, exams: List[Dict]) -> bytes:
     buffer.seek(0)
     return buffer.getvalue()
 
+

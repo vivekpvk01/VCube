@@ -33,3 +33,4 @@ async def get_mindmaps_endpoint(
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Authentication required.")
     return await get_user_mindmaps(db, user["user_id"])
 
+

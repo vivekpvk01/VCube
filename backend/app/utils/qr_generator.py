@@ -10,3 +10,4 @@ def generate_qr_code(data: str) -> bytes:
     img.save(buffer, format="PNG")
     return buffer.getvalue()
 
+

@@ -42,3 +42,4 @@ async def generate_hall_ticket(db: AsyncIOMotorDatabase, student_id: str, studen
 def admin_get_hall_ticket(db: AsyncIOMotorDatabase, student_id: str):
     return get_hall_ticket_by_student(db, student_id)
 
+

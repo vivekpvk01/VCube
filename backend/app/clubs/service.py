@@ -92,3 +92,4 @@ async def update_event_status(db: AsyncIOMotorDatabase, event_id: str, status_up
     doc = await db["club_events"].find_one({"_id": ObjectId(event_id)})
     return EventResponse.parse_obj(_serialize_event(doc)) if doc else None
 
+

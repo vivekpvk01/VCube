@@ -42,3 +42,4 @@ async def delete_exam_endpoint(
 async def get_exams_endpoint(request: Request, db=Depends(get_database)):
     return await fetch_exams(db)
 
+

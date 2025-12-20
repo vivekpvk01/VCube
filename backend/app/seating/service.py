@@ -87,3 +87,4 @@ async def get_seating_map(db: AsyncIOMotorDatabase, seating_map_id: Optional[str
     doc["_id"] = str(doc["_id"])
     return SeatingMapResponse.parse_obj(doc)
 
+

@@ -24,3 +24,4 @@ def get_database():
     if mongo_db is None:
         raise RuntimeError("MongoDB is not initialized. Call connect_to_mongo first.")
     return mongo_db
+

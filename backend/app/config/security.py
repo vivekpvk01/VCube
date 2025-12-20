@@ -6,12 +6,18 @@ from app.config.settings import settings
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-# --- Password Hashing ---
+# --- Password Hashing (DISABLED FOR HACKATHON) ---
+# All password hashing is disabled for hackathon/prototype mode.
+# Passwords are compared in plain text.
+# This MUST be reverted to proper hashing (bcrypt) before production use!
+#
 def hash_password(password: str) -> str:
-    return pwd_context.hash(password)
+    # Hashing disabled; store in plain text
+    return password
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return pwd_context.verify(plain_password, hashed_password)
+    # Verification disabled; direct string comparison only
+    return plain_password == hashed_password
 
 # --- JWT Tokens ---
 def create_access_token(subject: str, expires_delta: Optional[timedelta] = None):
@@ -37,4 +43,5 @@ def decode_jwt_token(token: str) -> Optional[dict]:
         return payload
     except JWTError:
         return None
+
 

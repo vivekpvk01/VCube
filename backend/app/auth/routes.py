@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Depends, Request, Response, status, HTTPException
 from app.auth.schemas import LoginRequest, TokenResponse
-from app.auth.service import verify_user_credentials, generate_jwt_for_user
+from app.auth.service import verify_user_credentials
 from app.config.database import get_database
 from app.config.settings import settings
+from app.auth.service import verify_user_credentials
 
 router = APIRouter()
 
@@ -13,14 +14,21 @@ async def login(
     request: Request,
     db=Depends(get_database)
 ):
-    user = await verify_user_credentials(db, data.email, data.password)
+    user = await verify_user_credentials(
+        db,
+        data.email,
+        data.password,
+        data.role      # 🔴 PASS ROLE
+    )
+
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid email or password"
+            detail="Invalid email, password, or role"
         )
 
-    access_token = generate_jwt_for_user(user)
+    from app.config.security import create_access_token
+    access_token = create_access_token(subject=user.user_id)
 
     response.set_cookie(
         key="access_token",

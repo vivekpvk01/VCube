@@ -20,3 +20,4 @@ class MindMapResponse(BaseModel):
     created_at: datetime
     created_by: str
 
+

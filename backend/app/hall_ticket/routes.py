@@ -23,3 +23,4 @@ async def admin_get_ticket(student_id: str, db=Depends(get_database)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Hall ticket not found.")
     return ticket
 
+

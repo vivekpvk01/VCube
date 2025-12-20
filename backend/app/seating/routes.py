@@ -53,3 +53,4 @@ async def view_seating_map(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Seating map not found.")
     return result
 
+

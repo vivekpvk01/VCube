@@ -25,73 +25,45 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
-// Mock user data for demo
-const mockUsers: Record<string, User> = {
-  "student@university.edu": {
-    id: "STU001",
-    name: "Alex Johnson",
-    email: "student@university.edu",
-    role: "student",
-    institution: "National Institute of Technology",
-    rollNumber: "21CS1045",
-    department: "Computer Science",
-    semester: 5,
-    academicYear: "2024-25",
-  },
-  "admin@university.edu": {
-    id: "ADM001",
-    name: "Dr. Sarah Williams",
-    email: "admin@university.edu",
-    role: "admin",
-    institution: "National Institute of Technology",
-  },
-  "seating@university.edu": {
-    id: "SM001",
-    name: "Michael Chen",
-    email: "seating@university.edu",
-    role: "seating-manager",
-    institution: "National Institute of Technology",
-  },
-  "club@university.edu": {
-    id: "CC001",
-    name: "Emily Davis",
-    email: "club@university.edu",
-    role: "club-coordinator",
-    institution: "National Institute of Technology",
-  },
-}
-
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
 
-  const login = useCallback(async (email: string, _password: string, role: UserRole): Promise<boolean> => {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 800))
+  const login = useCallback(async (email: string, password: string, role: UserRole): Promise<boolean> => {
+    try {
+      const res = await fetch("http://localhost:4000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ email, password, role }),
+      });
 
-    const mockUser = mockUsers[email]
-    if (mockUser && mockUser.role === role) {
-      setUser(mockUser)
-      return true
+      // Debug: Show actual network response
+      console.log("Login response status:", res.status, "ok:", res.ok);
+
+      if (!res.ok) {
+        let errMsg = "Unknown error";
+        try {
+          const errorJson = await res.json();
+          errMsg = errorJson?.detail || errorJson?.message || JSON.stringify(errorJson);
+        } catch (e) {}
+        console.error("Login failed with backend error:", errMsg);
+        return false;
+      }
+
+      // Backend does not return user info, so we store minimal local info
+      setUser({
+        id: email,
+        name: email.split("@")[0],
+        email,
+        role,
+        institution: "", // Could be loaded with user profile endpoint in the future
+      });
+
+      return true;
+    } catch (err) {
+      console.error("Login fetch error:", err);
+      return false;
     }
-
-    // For demo, allow any login with matching role
-    setUser({
-      id: `USER_${Date.now()}`,
-      name: email
-        .split("@")[0]
-        .replace(/[._]/g, " ")
-        .replace(/\b\w/g, (c) => c.toUpperCase()),
-      email,
-      role,
-      institution: "National Institute of Technology",
-      ...(role === "student" && {
-        rollNumber: "21XX1000",
-        department: "Engineering",
-        semester: 5,
-        academicYear: "2024-25",
-      }),
-    })
-    return true
   }, [])
 
   const logout = useCallback(() => {
@@ -99,7 +71,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated: !!user, login, logout }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user, isAuthenticated: !!user, login, logout }}>
+      {children}
+    </AuthContext.Provider>
   )
 }
 

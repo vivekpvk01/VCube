@@ -45,3 +45,4 @@ async def fetch_exams(db: AsyncIOMotorDatabase) -> List[ExamResponse]:
         exams.append(ExamResponse.parse_obj(_serialize_exam(doc)))
     return exams
 
+

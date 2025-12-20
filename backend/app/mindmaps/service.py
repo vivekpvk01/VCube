@@ -60,3 +60,4 @@ async def get_mindmap_by_id(
     doc = await db["mindmaps"].find_one({"_id": ObjectId(mindmap_id), "created_by": user_id})
     return MindMapResponse.parse_obj(_serialize_mindmap(doc)) if doc else None
 
+

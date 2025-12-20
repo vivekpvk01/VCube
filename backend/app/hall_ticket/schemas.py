@@ -17,3 +17,4 @@ class HallTicketResponse(BaseModel):
     qr_code_url: Optional[str] = None
     issued_at: str
 
+

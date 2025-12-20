@@ -23,13 +23,16 @@ async def shutdown():
     await close_mongo()
 
 # --- CORS ---
+from fastapi.middleware.cors import CORSMiddleware
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.CORS_ORIGINS,
+    allow_origins=["http://localhost:3000", "http://localhost:3001"],  # include all potential frontend URLs
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 # --- Error handler ---
 @app.exception_handler(Exception)

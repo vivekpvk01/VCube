@@ -34,3 +34,4 @@ def allocate_seats(students: List[StudentData], rooms: List[RoomData], mix_depar
             break
     return assignments
 
+

@@ -27,3 +27,4 @@ async def update_user_profile(db: AsyncIOMotorDatabase, user_id: str, data: User
     await db["users"].update_one({"_id": ObjectId(user_id)}, {"$set": update_data})
     return await get_user_by_id(db, user_id)
 
+

@@ -30,3 +30,4 @@ class ExamResponse(BaseModel):
     time: str
     venue: str
 
+

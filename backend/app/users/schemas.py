@@ -14,3 +14,4 @@ class UserUpdateRequest(BaseModel):
     phone: Optional[str] = None
     department: Optional[str] = None
 
+
